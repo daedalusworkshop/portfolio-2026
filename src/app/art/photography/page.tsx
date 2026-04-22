@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 export const metadata = { title: 'photography' }
 
 const PHOTOS = [
@@ -13,16 +15,19 @@ export default function Photography() {
   return (
     <div className="bg-black min-h-screen">
       <div className="flex flex-col items-center gap-16 pt-16 pb-24">
-        {PHOTOS.map((photo) => (
+        {PHOTOS.map((photo, i) => (
           <div
             key={photo.src}
-            className="w-full flex items-center justify-center"
+            className="relative w-full"
             style={{ height: '100svh' }}
           >
-            <img
+            <Image
               src={photo.src}
               alt={photo.alt}
-              className="max-h-full max-w-full object-contain"
+              fill
+              className="object-contain"
+              priority={i === 0}
+              sizes="100vw"
             />
           </div>
         ))}
