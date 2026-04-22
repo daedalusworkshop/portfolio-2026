@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-const style = { fontSize: 'clamp(1.4rem, min(5.2vw, 9vh), 5.5rem)' }
+const style = { fontSize: 'clamp(1.4rem, min(5.2vw, 5vh), 5.5rem)' }
 const cls = "display-serif font-serif text-white/90 leading-[1.2] tracking-[-0.015em] [text-wrap:pretty]"
 
 export default function Home() {

@@ -4,8 +4,7 @@ export const NAV_ITEMS = [
     href: '/design',
     children: [
       { label: 'Circle Family', href: '/design/circle-family' },
-      { label: 'Every Intelligence', href: '/design/every-intelligence' },
-      { label: 'Project Telephone', href: '/design/project-telephone' },
+      { label: 'Project Telephone', href: 'https://project-telephone-6onxzs6si-k2mikaili-gmailcoms-projects.vercel.app/portfolio.html' },
     ],
   },
   {
@@ -14,7 +13,6 @@ export const NAV_ITEMS = [
     children: [
       { label: 'photography', href: '/art/photography' },
       { label: 'poetry', href: '/art/poetry' },
-      { label: 'music', href: '/art/music' },
     ],
   },
   {
@@ -22,7 +20,6 @@ export const NAV_ITEMS = [
     href: '/about',
     children: [
       { label: 'philosophy', href: '/about/philosophy' },
-      { label: 'biography', href: '/about/biography' },
       { label: 'contact', href: '/about/contact' },
     ],
   },

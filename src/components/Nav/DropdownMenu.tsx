@@ -20,22 +20,25 @@ export default function DropdownMenu({ label, children }: Props) {
         aria-expanded={open}
       >
         {label}
-        <span className="text-[10px] leading-none opacity-50 mt-px">▾</span>
       </button>
 
       {open && (
-        <div className="absolute top-full left-0 pt-2 z-50 min-w-[160px]">
+        <div className="absolute top-full right-0 pt-2 z-50 min-w-[160px]">
           <ul className="bg-[#111] border border-[#222] py-1">
-            {children.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className="block px-4 py-2 text-sm text-white/50 hover:text-white hover:bg-white/5 transition-colors duration-100"
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
+            {children.map((item) => {
+              const external = item.href.startsWith('http')
+              return (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="block px-4 py-2 text-sm text-white/50 hover:text-white hover:bg-white/5 transition-colors duration-100"
+                    {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              )
+            })}
           </ul>
         </div>
       )}

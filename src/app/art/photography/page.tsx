@@ -5,7 +5,6 @@ const PHOTOS = [
   { src: '/images/art/photography/06-statue.png', alt: '' },
   { src: '/images/art/photography/03-monitor.png', alt: '' },
   { src: '/images/art/photography/02-cat.png', alt: '' },
-  { src: '/images/art/photography/07-extra.png', alt: '' },
   { src: '/images/art/photography/04-dog.png', alt: '' },
   { src: '/images/art/photography/05-pigeons.png', alt: '' },
 ]
@@ -13,13 +12,7 @@ const PHOTOS = [
 export default function Photography() {
   return (
     <div className="bg-black min-h-screen">
-      <div className="px-8 pt-32 pb-16">
-        <h1 className="font-serif text-xs uppercase tracking-[0.3em] text-white/25">
-          photography
-        </h1>
-      </div>
-
-      <div className="flex flex-col items-center gap-16 pb-24">
+      <div className="flex flex-col items-center gap-16 pt-16 pb-24">
         {PHOTOS.map((photo) => (
           <div
             key={photo.src}

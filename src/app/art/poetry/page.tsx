@@ -23,7 +23,7 @@ export default function PoetryIndex() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-6 py-32">
-      <h1 className="font-serif text-xs uppercase tracking-[0.3em] text-white/25 mb-16">poetry</h1>
+
       {slugs.length === 0 ? (
         <p className="text-white/30 text-sm font-serif italic">no poems yet</p>
       ) : (
