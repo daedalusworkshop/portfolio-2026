@@ -19,7 +19,7 @@ export default function Photography() {
         </h1>
       </div>
 
-      <div className="flex flex-col items-center gap-1 pb-24">
+      <div className="flex flex-col items-center gap-16 pb-24">
         {PHOTOS.map((photo) => (
           <div
             key={photo.src}

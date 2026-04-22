@@ -6,7 +6,6 @@ export const NAV_ITEMS = [
       { label: 'Circle Family', href: '/design/circle-family' },
       { label: 'Every Intelligence', href: '/design/every-intelligence' },
       { label: 'Project Telephone', href: '/design/project-telephone' },
-      { label: 'music.txt', href: '/design/music-txt' },
     ],
   },
   {
@@ -14,7 +13,6 @@ export const NAV_ITEMS = [
     href: '/art',
     children: [
       { label: 'photography', href: '/art/photography' },
-      { label: 'performance', href: '/art/performance' },
       { label: 'poetry', href: '/art/poetry' },
       { label: 'music', href: '/art/music' },
     ],
