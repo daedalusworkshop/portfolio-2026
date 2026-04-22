@@ -16,11 +16,11 @@ export default function DropdownMenu({ label, children }: Props) {
       onMouseLeave={() => setOpen(false)}
     >
       <button
-        className="flex items-center gap-1.5 text-sm text-white/60 hover:text-white transition-colors duration-150 py-2 cursor-default"
+        className="flex items-center gap-1 text-sm text-white/50 hover:text-white/90 transition-colors duration-150 py-2 cursor-default"
         aria-expanded={open}
       >
         {label}
-        <span className="text-[10px] opacity-40">↓</span>
+        <span className="text-[10px] leading-none opacity-50 mt-px">▾</span>
       </button>
 
       {open && (
