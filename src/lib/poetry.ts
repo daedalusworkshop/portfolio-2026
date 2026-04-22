@@ -12,8 +12,17 @@ export function getAllPoemSlugs(): string[] {
     .sort()
 }
 
-export function getPoemBySlug(slug: string): { slug: string; body: string } {
+export function getPoemBySlug(slug: string): { slug: string; title: string; body: string } {
   const filePath = path.join(POETRY_DIR, `${slug}.txt`)
-  const body = fs.readFileSync(filePath, 'utf-8')
-  return { slug, body }
+  const raw = fs.readFileSync(filePath, 'utf-8')
+
+  const firstLine = raw.split('\n')[0]
+  if (firstLine.startsWith('title:')) {
+    const title = firstLine.replace('title:', '').trim()
+    const body = raw.split('\n').slice(1).join('\n').trimStart()
+    return { slug, title, body }
+  }
+
+  const title = slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
+  return { slug, title, body: raw }
 }
