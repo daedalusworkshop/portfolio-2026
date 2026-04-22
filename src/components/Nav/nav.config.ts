@@ -4,7 +4,7 @@ export const NAV_ITEMS = [
     href: '/design',
     children: [
       { label: 'Circle Family', href: '/design/circle-family' },
-      { label: 'Project Telephone', href: 'https://project-telephone-6onxzs6si-k2mikaili-gmailcoms-projects.vercel.app/portfolio.html' },
+      { label: 'Project Telephone', href: 'https://telephone.kasra.world/portfolio.html' },
     ],
   },
   {

@@ -16,7 +16,7 @@ export default function Home() {
           It&rsquo;s in{' '}
           <Link href="/design/circle-family" className="underline underline-offset-4 decoration-1 hover:text-white/60 transition-colors">the lamp I designed to feel like family</Link>
           . It&rsquo;s in{' '}
-          <a href="https://project-telephone-6onxzs6si-k2mikaili-gmailcoms-projects.vercel.app/portfolio.html" className="underline underline-offset-4 decoration-1 hover:text-white/60 transition-colors">the telephone booth that brings out our blues</a>
+          <a href="https://telephone.kasra.world/portfolio.html" className="underline underline-offset-4 decoration-1 hover:text-white/60 transition-colors">the telephone booth that brings out our blues</a>
           . It&rsquo;s in{' '}
           <Link href="/art/photography" className="underline underline-offset-4 decoration-1 hover:text-white/60 transition-colors">the photos I take</Link>
           {' '}and{' '}
