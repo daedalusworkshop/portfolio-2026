@@ -16,7 +16,7 @@ export default function DropdownMenu({ label, children }: Props) {
       onMouseLeave={() => setOpen(false)}
     >
       <button
-        className="flex items-center gap-1 text-sm text-white/50 hover:text-white/90 transition-colors duration-150 py-2 cursor-default"
+        className="flex items-center gap-1 text-sm text-white/50 hover:text-white/90 transition-colors duration-150 py-2 cursor-default mix-blend-difference"
         aria-expanded={open}
       >
         {label}
@@ -32,6 +32,7 @@ export default function DropdownMenu({ label, children }: Props) {
                   <Link
                     href={item.href}
                     className="block px-4 py-2 text-sm text-white/50 hover:text-white hover:bg-white/5 transition-colors duration-100"
+                    onClick={() => setOpen(false)}
                     {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                   >
                     {item.label}
