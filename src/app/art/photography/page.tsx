@@ -26,7 +26,7 @@ export default function Photography() {
               alt={photo.alt}
               fill
               className="object-contain"
-              priority={i === 0}
+              priority
               sizes="100vw"
             />
           </div>
