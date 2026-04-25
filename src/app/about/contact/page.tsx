@@ -10,18 +10,18 @@ const socials = [
 
 export default function Contact() {
   return (
-    <div className="min-h-screen flex pt-16">
-      <div className="relative w-1/2">
+    <div className="min-h-screen flex flex-col md:flex-row pt-16">
+      <div className="relative w-full md:w-1/2 h-64 md:h-auto">
         <Image
           src="/images/DSC_0299.jpg"
           alt="Kasra Mikaili"
           fill
-          sizes="50vw"
+          sizes="(max-width: 768px) 100vw, 50vw"
           className="object-cover [object-position:20%_50%]"
           priority
         />
       </div>
-      <div className="w-1/2 flex flex-col justify-center px-16 py-16">
+      <div className="w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16 py-16">
         <div className="flex flex-col gap-1 mb-4">
           {socials.map(s => (
             <a
