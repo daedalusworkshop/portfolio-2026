@@ -4,9 +4,9 @@ import { useState } from 'react'
 import Link from 'next/link'
 
 type Item = { label: string; href: string }
-type Props = { label: string; children: readonly Item[] }
+type Props = { label: string; children: readonly Item[]; light?: boolean }
 
-export default function DropdownMenu({ label, children }: Props) {
+export default function DropdownMenu({ label, children, light }: Props) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -16,7 +16,9 @@ export default function DropdownMenu({ label, children }: Props) {
       onMouseLeave={() => setOpen(false)}
     >
       <button
-        className="flex items-center gap-1 text-sm text-white/50 hover:text-white/90 transition-colors duration-150 py-2 cursor-default mix-blend-difference"
+        className={`flex items-center gap-1 text-sm transition-colors duration-100 py-2 cursor-default ${
+          light ? 'text-black/60 hover:text-black/90' : 'text-white/50 hover:text-white/90'
+        }`}
         aria-expanded={open}
       >
         {label}

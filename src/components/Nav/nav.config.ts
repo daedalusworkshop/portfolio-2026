@@ -4,6 +4,7 @@ export const NAV_ITEMS = [
     href: '/design',
     children: [
       { label: 'Circle Family', href: '/design/circle-family' },
+      { label: 'Lifeform', href: '/design/lifeform' },
       { label: 'Project Telephone', href: 'https://telephone.kasra.world/portfolio.html' },
     ],
   },
