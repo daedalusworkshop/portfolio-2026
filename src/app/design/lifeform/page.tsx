@@ -22,7 +22,7 @@ export default function LifeformPage() {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/70" />
         <div className="relative z-10 w-full">
-          <h1 className="display-serif font-serif text-[clamp(4.5rem,18vw,14rem)] leading-none tracking-[-0.02em] text-white/90">
+          <h1 className="display-serif font-serif text-[clamp(4rem,13vw,9rem)] leading-none tracking-[-0.02em] text-white/90">
             Lifeform
           </h1>
         </div>
@@ -32,7 +32,7 @@ export default function LifeformPage() {
       <section className="mx-auto grid min-h-[80svh] max-w-6xl grid-cols-1 items-start gap-16 px-6 py-28 md:grid-cols-2 md:gap-20 md:px-12 md:py-36">
         <div>
           <p className="mb-8 font-serif text-xs uppercase tracking-[0.3em] text-black/35">Prompt</p>
-          <div className="space-y-5 font-serif text-[clamp(1.35rem,2.6vw,2.1rem)] leading-[1.22] tracking-[-0.015em] text-black/75 [text-wrap:pretty]">
+          <div className="space-y-5 font-serif text-[clamp(1.2rem,2.6vw,1.5rem)] leading-[1.22] tracking-[-0.015em] text-black/75 [text-wrap:pretty]">
             <p>
               Inspired by dry garden landscapes, design a maple tool that creates patterns in sand.
             </p>
@@ -43,7 +43,7 @@ export default function LifeformPage() {
         </div>
         <div>
           <p className="mb-8 font-serif text-xs uppercase tracking-[0.3em] text-black/35">Intent</p>
-          <div className="space-y-5 font-serif text-[clamp(1.35rem,2.6vw,2.1rem)] leading-[1.22] tracking-[-0.015em] text-black/75 [text-wrap:pretty]">
+          <div className="space-y-5 font-serif text-[clamp(1.2rem,2.6vw,1.5rem)] leading-[1.22] tracking-[-0.015em] text-black/75 [text-wrap:pretty]">
             <p>
               Even if I create the most beautiful pattern ever, it will inevitably mix back into the sand. This is true of life too.
             </p>
@@ -95,17 +95,21 @@ export default function LifeformPage() {
         </div>
       </section>
 
-      {/* Making — Drill (full-bleed) */}
-      <section className="relative flex min-h-[80svh] items-end overflow-hidden bg-black px-6 pb-10 md:px-12 md:pb-14">
-        <img
-          src={`${base}/making-drill.jpg`}
-          alt="Drilling the maple block on a drill press using three sizes of bits."
-          className="absolute inset-0 h-full w-full object-cover object-[30%_50%] opacity-65"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
-        <p className="relative z-10 display-serif max-w-2xl font-serif text-[clamp(1.6rem,min(3.5vw,4.5vh),3rem)] leading-[1.04] tracking-[-0.04em] text-white/88 [text-wrap:pretty]">
-          Drilled, using three sizes of bits
-        </p>
+      {/* Making — Drill */}
+      <section className="mx-auto flex min-h-[65svh] max-w-6xl flex-col items-center gap-12 px-6 py-20 md:flex-row-reverse md:gap-16 md:px-12 md:py-28">
+        <div className="md:w-[48%]">
+          <p className="mb-7 font-serif text-xs uppercase tracking-[0.3em] text-black/35">Making</p>
+          <p className="display-serif font-serif text-[clamp(1.6rem,min(3.5vw,4.5vh),3rem)] leading-[1.04] tracking-[-0.04em] text-black/80 [text-wrap:pretty]">
+            Drilled, using three sizes of bits
+          </p>
+        </div>
+        <div className="aspect-[3/4] w-full overflow-hidden md:w-[52%]">
+          <img
+            src={`${base}/making-drill.jpg`}
+            alt="Drilling the maple block on a drill press using three sizes of bits."
+            className="h-full w-full object-cover object-[38%_65%]"
+          />
+        </div>
       </section>
 
       {/* Making — The object + Instructions */}
