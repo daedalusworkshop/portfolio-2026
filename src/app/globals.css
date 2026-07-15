@@ -13,6 +13,12 @@
 }
 
 /* 2026 portfolio encounter */
+html:has(.portfolio-home),
+body:has(.portfolio-home) {
+  overscroll-behavior-y: none;
+  background-color: #171713;
+}
+
 .portfolio-home {
   --paper: #f2eee5;
   --ink: #171713;
@@ -153,6 +159,8 @@
 .portfolio-thesis-close { padding-top: 1em; border-top: 1px solid rgba(0,0,0,.25); }
 
 .computergrass-full { background: var(--paper); }
+/* Keep the collapsed poem out of layout as well as out of view. */
+.computergrass-full details:not([open]) .poem { display: none; }
 .computergrass-full summary { padding: 2rem max(1.5rem, calc((100vw - 86rem) / 2)); cursor: pointer; border-bottom: 1px solid var(--rule); font: 500 .75rem/1.2 ui-monospace, monospace; text-transform: uppercase; letter-spacing: .1em; list-style-position: inside; }
 .computergrass-full summary:hover { background: #e7e1d6; }
 .poem { padding: clamp(5rem, 10vw, 10rem) max(1.5rem, calc((100vw - 58rem) / 2)); }
