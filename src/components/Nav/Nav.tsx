@@ -23,7 +23,7 @@ function isLight(rgb: string): boolean {
 }
 
 export default function Nav() {
-  const [light, setLight] = useState(false)
+  const [light, setLight] = useState(true)
 
   useEffect(() => {
     const update = () => {
