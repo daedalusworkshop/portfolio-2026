@@ -19,6 +19,8 @@ body:has(.portfolio-home) {
   background-color: #171713;
 }
 
+body:has(.portfolio-home) > header { display: none; }
+
 .portfolio-home {
   --paper: #f2eee5;
   --ink: #171713;
@@ -32,8 +34,65 @@ body:has(.portfolio-home) {
 
 .portfolio-home ::selection { background: #d8ff58; color: var(--ink); }
 
+.portfolio-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: grid;
+  grid-template-columns: minmax(20rem, 1fr) auto;
+  align-items: center;
+  gap: 2rem;
+  padding: 0.85rem max(1.5rem, calc((100vw - 86rem) / 2));
+  border-bottom: 1px solid var(--rule);
+  background: rgba(242, 238, 229, 0.96);
+  backdrop-filter: blur(12px);
+}
+
+.portfolio-topbar > p {
+  margin: 0;
+  font: 500 0.7rem/1.35 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+.portfolio-topbar nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: clamp(0.7rem, 1.7vw, 1.5rem);
+}
+
+.portfolio-topbar a {
+  position: relative;
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  font-size: 0.78rem;
+  white-space: nowrap;
+  transition: color 160ms ease, opacity 160ms ease;
+}
+
+.portfolio-topbar a::after {
+  position: absolute;
+  right: 0;
+  bottom: 0.55rem;
+  left: 0;
+  height: 1px;
+  background: currentColor;
+  content: "";
+  opacity: 0;
+  transform: scaleX(0.6);
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.portfolio-topbar a:hover::after,
+.portfolio-topbar a:focus-visible::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
 .portfolio-hero {
-  min-height: 100svh;
+  min-height: calc(100svh - 4rem);
   padding: clamp(7rem, 12vw, 10rem) max(1.5rem, calc((100vw - 86rem) / 2)) 3rem;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.72fr);
@@ -175,12 +234,18 @@ body:has(.portfolio-home) {
 .poem section p + p { margin-top: 2rem; }
 .poem-trickle { padding-left: clamp(1rem, 8vw, 8rem); }
 
-.portfolio-footer { min-height: 18rem; padding: 3rem max(1.5rem, calc((100vw - 86rem) / 2)); display: flex; justify-content: space-between; align-items: end; background: #171713; color: var(--paper); }
-.portfolio-footer > p { font-family: "Iowan Old Style", serif; font-size: clamp(2rem, 4vw, 4rem); }
-.portfolio-footer div { display: flex; gap: 1.5rem; font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; }
+.portfolio-footer { min-height: 22rem; padding: clamp(4rem, 7vw, 7rem) max(1.5rem, calc((100vw - 86rem) / 2)); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 3rem; align-items: end; background: #171713; color: var(--paper); }
+.portfolio-footer > p { margin: 0; max-width: 12ch; font-family: "Iowan Old Style", serif; font-size: clamp(3rem, 6vw, 6.5rem); line-height: .96; text-wrap: balance; }
+.portfolio-footer-cta { display: inline-flex; min-height: 4.5rem; align-items: center; justify-content: center; padding: 1rem 1.5rem; background: #d8ff58; color: #171713; font: 500 0.8rem/1 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; letter-spacing: .08em; text-transform: uppercase; transition: background-color 160ms ease, color 160ms ease, transform 160ms ease; }
+.portfolio-footer-cta:hover, .portfolio-footer-cta:focus-visible { background: var(--paper); }
+.portfolio-footer-cta:active { transform: scale(.96); }
 
 @media (max-width: 760px) {
-  .portfolio-hero { grid-template-columns: minmax(0, 1fr); min-height: 92svh; align-content: center; gap: 2.5rem; }
+  .portfolio-topbar { position: relative; grid-template-columns: 1fr; gap: .65rem; padding-top: 1rem; padding-bottom: .55rem; }
+  .portfolio-topbar > p { max-width: 30rem; }
+  .portfolio-topbar nav { justify-content: flex-start; gap: 1rem; overflow-x: auto; }
+  .portfolio-topbar a { font-size: .72rem; }
+  .portfolio-hero { grid-template-columns: minmax(0, 1fr); min-height: calc(92svh - 6rem); align-content: center; gap: 2.5rem; }
   .portfolio-kicker, .portfolio-down { grid-column: auto; }
   .portfolio-hero h1 { max-width: 100%; font-size: clamp(3.55rem, 15vw, 4.5rem); overflow-wrap: anywhere; }
   .computergrass-fragment { min-height: 70svh; grid-template-columns: 1fr; align-content: center; }
@@ -200,8 +265,8 @@ body:has(.portfolio-home) {
   .lifeform-grid blockquote { padding-left: 12vw; }
   .poem section { grid-template-columns: 1fr; }
   .poem section b { grid-row: auto; margin-bottom: 1rem; }
-  .portfolio-footer { align-items: start; flex-direction: column; gap: 5rem; }
-  .portfolio-footer div { flex-direction: column; }
+  .portfolio-footer { min-height: 28rem; grid-template-columns: 1fr; align-content: space-between; align-items: start; gap: 5rem; }
+  .portfolio-footer-cta { width: 100%; }
 }
 
 @layer base {
