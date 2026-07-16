@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 const Fragment = ({ children }: { children: React.ReactNode }) => (
   <aside className="computergrass-fragment">
-    <span>from Computergrass</span>
+    <span>From Computergrass, an original poem</span>
     <p>{children}</p>
   </aside>
 )
@@ -10,8 +10,17 @@ const Fragment = ({ children }: { children: React.ReactNode }) => (
 export default function Home() {
   return (
     <div className="portfolio-home">
+      <header className="portfolio-topbar">
+        <p>Kasra C. Mikaili · industrial designer, poet, technologist</p>
+        <nav aria-label="Portfolio projects">
+          <a href="#percy">Percy</a>
+          <a href="#zinemaker">ZineMaker</a>
+          <a href="#telephone">Project Telephone</a>
+          <a href="#akutan">Akutan</a>
+          <a href="#lifeform">Lifeform</a>
+        </nav>
+      </header>
       <section className="portfolio-hero">
-        <p className="portfolio-kicker">Kasra C. Mikaili · industrial designer, poet, technologist</p>
         <h1>I make new ways of living with computers.</h1>
         <div className="portfolio-hero-copy">
           <p>We used to live close to things.</p>
@@ -116,10 +125,6 @@ export default function Home() {
               <audio controls preload="metadata" src="/portfolio/akutan.wav">Your browser does not support audio.</audio>
             </div>
           </header>
-          <figure className="akutan-proof">
-            <img src="/portfolio/akutan-section.png" alt="Visual interpretation of the Akutan Volcano earthquake catalog" />
-            <figcaption>Akutan Volcano, November 1997 to December 2017.</figcaption>
-          </figure>
         </section>
 
         <Fragment>
@@ -186,8 +191,8 @@ export default function Home() {
       </section>
 
       <footer className="portfolio-footer">
-        <p>Kasra C. Mikaili</p>
-        <div><a href="mailto:kasra@kasra.world">kasra@kasra.world</a><Link href="/about/contact">Contact</Link></div>
+        <p>Have a project in mind?</p>
+        <a className="portfolio-footer-cta" href="mailto:kasra@kasra.world">Let&apos;s make something</a>
       </footer>
     </div>
   )
