@@ -4,6 +4,7 @@ import { getAllPoemSlugs } from '@/lib/poetry'
 export const metadata = { title: 'poetry' }
 
 const ORDER = [
+  'computergrass',
   'in-my-world',
   'on-growing-up',
   'cabin',
@@ -48,7 +49,7 @@ export default function PoetryIndex() {
           })}
         </ul>
       )}
-      <p className="font-serif text-sm italic text-white/30 mt-16">ask me for more, I'd love to share</p>
+      <p className="font-serif text-sm italic text-white/30 mt-16">ask me for more, I&apos;d love to share</p>
     </div>
   )
 }

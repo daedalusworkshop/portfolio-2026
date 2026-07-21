@@ -323,6 +323,12 @@ body:has(.portfolio-home) > main {
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .telephone-motion {
+    animation: none !important;
+  }
+}
+
 @keyframes infiniteSliderVertical {
   to {
     transform: translate3d(0, calc(-1 * var(--slider-distance)), 0);

@@ -16,7 +16,8 @@ export default function Contact() {
           src="/images/DSC_0299.jpg"
           alt="Kasra Mikaili"
           fill
-          sizes="(max-width: 768px) 100vw, 50vw"
+          sizes="100vw"
+          quality={85}
           className="object-cover [object-position:20%_50%]"
           priority
         />

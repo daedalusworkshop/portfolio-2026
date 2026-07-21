@@ -7,7 +7,7 @@ export default function CircleFamilyPage() {
     <iframe
       src="https://logical-room-812924.framer.app/design/circle-family"
       title="Circle Family"
-      className="fixed inset-0 w-full h-full border-0"
+      className="fixed inset-0 h-full w-full border-0 bg-white"
       sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
     />
   )

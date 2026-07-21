@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 
 export const metadata: Metadata = {
   title: 'Lifeform',
@@ -9,16 +10,17 @@ const base = '/images/design/lifeform'
 
 export default function LifeformPage() {
   return (
-    <main className="overflow-x-hidden bg-white text-[#0a0a0a]">
+    <article className="overflow-x-hidden bg-white text-[#0a0a0a]">
 
       {/* Hero */}
       <section className="relative flex min-h-[100svh] items-end overflow-hidden bg-black px-6 pb-10 md:px-12 md:pb-14">
-        <img
+        <Image
           src={`${base}/cube-in-sand.jpg`}
           alt="Lifeform cube resting in raked sand, instructions engraved on its face."
+          fill
+          sizes="100vw"
           className="absolute inset-0 h-full w-full object-cover opacity-80"
-          loading="eager"
-          fetchPriority="high"
+          priority
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/70" />
         <div className="relative z-10 w-full">
@@ -67,10 +69,12 @@ export default function LifeformPage() {
             { n: 3, alt: 'Existence and human experience as pattern.' },
             { n: 4, alt: 'Making: Life cube form sketches and usage.' },
           ].map(({ n, alt }) => (
-            <div key={n} className="aspect-[3/4] overflow-hidden">
-              <img
+            <div key={n} className="relative aspect-[3/4] overflow-hidden">
+              <Image
                 src={`${base}/mark-${n}.jpg`}
                 alt={alt}
+                fill
+                sizes="(min-width: 768px) 25vw, 50vw"
                 className="h-full w-full object-cover object-top"
               />
             </div>
@@ -87,9 +91,12 @@ export default function LifeformPage() {
           </p>
         </div>
         <div className="md:w-[52%]">
-          <img
+          <Image
             src={`${base}/generated-tool.jpg`}
             alt="Exploded view of stacked maple slabs, processed and glued."
+            width={768}
+            height={1085}
+            sizes="(min-width: 1152px) 537px, (min-width: 768px) 52vw, 100vw"
             className="w-full object-contain"
           />
         </div>
@@ -103,10 +110,12 @@ export default function LifeformPage() {
             Drilled, using three sizes of bits
           </p>
         </div>
-        <div className="aspect-[3/4] w-full overflow-hidden md:w-[52%]">
-          <img
+        <div className="relative aspect-[3/4] w-full overflow-hidden md:w-[52%]">
+          <Image
             src={`${base}/making-drill.jpg`}
             alt="Drilling the maple block on a drill press using three sizes of bits."
+            fill
+            sizes="(min-width: 1152px) 537px, (min-width: 768px) 52vw, 100vw"
             className="h-full w-full object-cover object-[38%_65%]"
           />
         </div>
@@ -122,9 +131,12 @@ export default function LifeformPage() {
           </p>
         </div>
         <div className="md:w-[52%]">
-          <img
+          <Image
             src={`${base}/cube-in-sand.jpg`}
             alt="Lifeform cube resting in raked sand, instructions engraved on its face."
+            width={1500}
+            height={2000}
+            sizes="(min-width: 1152px) 537px, (min-width: 768px) 52vw, 100vw"
             className="w-full object-contain"
           />
         </div>
@@ -161,13 +173,16 @@ export default function LifeformPage() {
 
       {/* Payoff */}
       <section className="bg-white">
-        <img
+        <Image
           src={`${base}/sand-field.jpg`}
           alt="Footprints and Lifeform impressions pressed into sand."
+          width={2063}
+          height={2106}
+          sizes="100vw"
           className="w-full"
         />
       </section>
 
-    </main>
+    </article>
   )
 }

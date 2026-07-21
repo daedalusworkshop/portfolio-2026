@@ -15,7 +15,7 @@ export default function Photography() {
   return (
     <div className="bg-black min-h-screen">
       <div className="flex flex-col items-center gap-16 pt-16 pb-24">
-        {PHOTOS.map((photo, i) => (
+        {PHOTOS.map((photo) => (
           <div
             key={photo.src}
             className="relative w-full"

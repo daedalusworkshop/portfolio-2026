@@ -1,0 +1,634 @@
+:root {
+  --paper: #f7f5ef;
+  --ink: #11110f;
+  --muted: #6f6a60;
+  --rule: rgba(17, 17, 15, 0.16);
+  --accent: #d3411f;
+  --soft: #ede9df;
+  --header-height: 56px;
+  --hero-peek: clamp(5rem, 16vh, 9rem);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.1;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+}
+
+.site-header {
+  align-items: center;
+  background: color-mix(in srgb, var(--paper) 90%, transparent);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  height: var(--header-height);
+  left: 0;
+  padding: 0 26px;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 10;
+}
+
+.wordmark,
+.header-link {
+  text-decoration: none;
+}
+
+.wordmark {
+  font-size: clamp(1.1rem, 1.8vw, 1.55rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.header-link {
+  font-size: clamp(0.95rem, 1.25vw, 1.15rem);
+  line-height: 1;
+  min-height: 40px;
+  padding-block: 12px;
+  text-underline-offset: 0.18em;
+}
+
+.header-link:hover,
+.header-link:focus-visible {
+  text-decoration: underline;
+}
+
+.header-link:focus-visible,
+.button-primary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.header-link:last-child,
+.header-current {
+  justify-self: end;
+}
+
+.install-cta {
+  border: 0;
+  background: var(--ink);
+  color: var(--paper);
+  cursor: pointer;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  min-height: 40px;
+  padding: 13px 14px 11px;
+  text-transform: uppercase;
+  transition-duration: 160ms;
+  transition-property: background-color, color, scale;
+  transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
+.install-cta:hover {
+  background: var(--accent);
+  text-decoration: none;
+}
+
+.install-cta:active {
+  scale: 0.96;
+}
+
+.header-back {
+  justify-self: start;
+}
+
+.home-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 50vw) minmax(360px, 1fr);
+  min-height: 100vh;
+}
+
+.copy-rail {
+  min-height: 100vh;
+  overflow: visible;
+  padding-top: var(--header-height);
+  scroll-behavior: smooth;
+}
+
+.copy-page {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: auto;
+  padding: clamp(3rem, 7vw, 7rem) clamp(1.6rem, 5vw, 5.5rem);
+  text-align: center;
+}
+
+.hero-copy {
+  min-height: max(360px, calc(100vh - var(--header-height) - var(--hero-peek)));
+  padding-block: clamp(4rem, 9vw, 7rem);
+}
+
+.access-dialog {
+  background: transparent;
+  border: 0;
+  color: var(--ink);
+  margin: auto;
+  max-width: calc(100vw - 2rem);
+  padding: 0;
+  width: 36rem;
+}
+
+.access-dialog::backdrop {
+  background: rgba(17, 17, 15, 0.38);
+  backdrop-filter: blur(3px);
+}
+
+.access-dialog-inner {
+  background: var(--paper);
+  box-shadow:
+    0 0 0 1px rgba(17, 17, 15, 0.08),
+    0 24px 80px rgba(17, 17, 15, 0.2);
+  padding: clamp(2rem, 6vw, 4rem);
+  position: relative;
+}
+
+.access-dialog h2 {
+  font-size: clamp(2.5rem, 6vw, 4.4rem);
+  line-height: 0.96;
+  margin-bottom: clamp(2rem, 5vw, 3rem);
+  max-width: 8em;
+  text-wrap: balance;
+}
+
+.access-close {
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  min-height: 44px;
+  padding: 0.75rem;
+  position: absolute;
+  right: 0.75rem;
+  text-transform: uppercase;
+  top: 0.75rem;
+  transition-duration: 160ms;
+  transition-property: color;
+  transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
+.access-close:hover {
+  color: var(--accent);
+}
+
+.access-close:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.access-kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.8rem;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.access-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.access-row input,
+.access-row button {
+  border: 0;
+  border-radius: 0;
+  min-height: 48px;
+}
+
+.access-row input {
+  appearance: none;
+  background: transparent;
+  box-shadow: inset 0 -1px 0 var(--ink);
+  color: var(--ink);
+  font: inherit;
+  font-size: 1rem;
+  min-width: 0;
+  padding: 0.75rem 0.9rem;
+  transition-duration: 160ms;
+  transition-property: box-shadow;
+  transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
+.access-row input::placeholder {
+  color: color-mix(in srgb, var(--muted) 76%, transparent);
+}
+
+.access-row input:focus {
+  box-shadow: inset 0 -2px 0 var(--accent);
+  outline: none;
+}
+
+.access-row button {
+  background: var(--ink);
+  color: var(--paper);
+  cursor: pointer;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  padding: 0 1.15rem;
+  text-transform: uppercase;
+  transition-duration: 160ms;
+  transition-property: background-color, color, scale;
+  transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
+.access-row button:hover {
+  background: var(--accent);
+}
+
+.access-row button:disabled {
+  cursor: wait;
+  opacity: 0.55;
+}
+
+.access-row button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.access-row button:active {
+  scale: 0.96;
+}
+
+.access-note,
+.access-status {
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+  text-align: left;
+}
+
+.access-note {
+  margin-top: 0.65rem;
+}
+
+.access-status {
+  color: var(--accent);
+  min-height: 1em;
+  margin-top: 0.3rem;
+}
+
+.eyebrow {
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  margin: 0 0 1.25rem;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+p {
+  margin-block: 0;
+}
+
+h1 {
+  font-size: clamp(2.5rem, 5vw, 5.6rem);
+  letter-spacing: 0;
+  line-height: 0.96;
+  max-width: 9.5em;
+  text-wrap: balance;
+}
+
+.lede {
+  color: var(--muted);
+  font-size: clamp(1.1rem, 1.8vw, 1.55rem);
+  line-height: 1.25;
+  margin-top: 1.35rem;
+  max-width: 28rem;
+  text-wrap: pretty;
+}
+
+.button-primary {
+  background: var(--ink);
+  color: var(--paper);
+  display: inline-flex;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.8rem;
+  justify-content: center;
+  letter-spacing: 0.08em;
+  margin-top: 2rem;
+  min-height: 42px;
+  padding: 14px 18px 12px;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition-duration: 160ms;
+  transition-property: background-color, color, scale;
+  transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
+.button-primary:hover {
+  background: var(--accent);
+}
+
+.button-primary:active {
+  scale: 0.96;
+}
+
+.media-rail {
+  align-items: center;
+  display: flex;
+  height: max(calc(360px + var(--header-height)), calc(100vh - var(--hero-peek)));
+  justify-content: center;
+  padding: var(--header-height) clamp(2rem, 7vw, 8rem) 0 clamp(1rem, 4vw, 4rem);
+  position: sticky;
+  top: 0;
+}
+
+.video-plate {
+  position: relative;
+  margin: 0;
+  width: min(31vw, 440px);
+}
+
+.video-plate video {
+  aspect-ratio: 960 / 1378;
+  background: var(--soft);
+  box-shadow: 0 0 0 1px rgba(17, 17, 15, 0.08), 0 24px 80px rgba(17, 17, 15, 0.08);
+  display: block;
+  object-fit: cover;
+  width: 100%;
+}
+
+.flow-copy h2 {
+  font-size: clamp(2.1rem, 4.4vw, 4.8rem);
+  line-height: 0.98;
+  max-width: 8.8em;
+  text-wrap: balance;
+}
+
+.flow-copy {
+  justify-content: flex-start;
+  padding-bottom: clamp(2rem, 6vh, 4rem);
+  padding-top: clamp(2rem, 5vh, 4rem);
+}
+
+.visually-hidden {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.flow-list {
+  counter-reset: flow;
+  list-style: none;
+  margin: 2.2rem 0 0;
+  max-width: 30rem;
+  padding: 0;
+  text-align: left;
+  width: 100%;
+}
+
+.flow-list li {
+  border-top: 1px solid var(--rule);
+  counter-increment: flow;
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: 3ch 1fr;
+  padding: 1.05rem 0;
+}
+
+.flow-list li::before {
+  color: var(--accent);
+  content: counter(flow, decimal-leading-zero);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.72rem;
+  padding-top: 0.2rem;
+}
+
+.flow-command,
+.flow-detail {
+  grid-column: 2;
+}
+
+.flow-command {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.flow-detail {
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.35;
+  margin-top: -0.45rem;
+}
+
+.install {
+  background:
+    linear-gradient(90deg, transparent 0, transparent calc(50% - 1px), var(--rule) calc(50% - 1px), var(--rule) 50%, transparent 50%),
+    var(--paper);
+}
+
+.install-shell {
+  margin: 0 auto;
+  max-width: 880px;
+  padding: calc(var(--header-height) + 4rem) clamp(1.5rem, 6vw, 5rem) 6rem;
+}
+
+.install-hero {
+  min-height: 42vh;
+  padding-top: clamp(2rem, 7vw, 6rem);
+  text-align: center;
+}
+
+.install-hero h1 {
+  margin-inline: auto;
+}
+
+.install-hero .lede {
+  margin-inline: auto;
+}
+
+.doc-section {
+  border-top: 1px solid var(--rule);
+  padding: 2rem 0 2.4rem;
+}
+
+.doc-section h2 {
+  font-size: clamp(1.55rem, 3vw, 2.5rem);
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+
+.doc-section p {
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.45;
+  max-width: 42rem;
+}
+
+pre {
+  background: #151411;
+  color: #f7f5ef;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  margin: 1rem 0 0;
+  overflow-x: auto;
+  padding: 1rem;
+}
+
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.flowchart {
+  display: grid;
+  gap: 0;
+  margin-top: 1.2rem;
+}
+
+.flowchart span {
+  align-items: center;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  font-size: clamp(1.15rem, 2.4vw, 1.75rem);
+  justify-content: space-between;
+  min-height: 58px;
+  padding: 0.75rem 0;
+}
+
+.flowchart span::after {
+  color: var(--accent);
+  content: "↓";
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 1rem;
+}
+
+.flowchart span:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+
+.flowchart span:last-child::after {
+  content: "";
+}
+
+@media (max-width: 800px) {
+  :root {
+    --header-height: 52px;
+  }
+
+  .site-header {
+    grid-template-columns: 1fr auto;
+    padding-inline: 16px;
+  }
+
+  .header-back {
+    display: none;
+  }
+
+  .wordmark {
+    justify-self: start;
+  }
+
+  .wordmark {
+    font-size: 0.92rem;
+  }
+
+  .header-link {
+    font-size: 0.9rem;
+  }
+
+  .home-shell {
+    display: flex;
+    flex-direction: column-reverse;
+    min-height: auto;
+    padding-top: var(--header-height);
+  }
+
+  .copy-rail {
+    height: auto;
+    overflow: visible;
+    padding-top: 0;
+  }
+
+  .copy-page {
+    min-height: auto;
+    padding: 3.8rem 1.25rem;
+  }
+
+  .hero-copy {
+    min-height: auto;
+    padding-block: 5rem;
+  }
+
+  .access-row {
+    gap: 0.75rem;
+    grid-template-columns: 1fr;
+  }
+
+  .access-row button {
+    width: 100%;
+  }
+
+  h1 {
+    font-size: clamp(2.6rem, 13vw, 4.2rem);
+  }
+
+  .media-rail {
+    height: auto;
+    padding: 4rem 1.25rem 0;
+    position: static;
+  }
+
+  .video-plate {
+    width: min(72vw, 340px);
+  }
+
+  .flow-list {
+    max-width: none;
+  }
+
+  .install {
+    background: var(--paper);
+  }
+
+  .install-shell {
+    padding: calc(var(--header-height) + 2rem) 1.25rem 4rem;
+  }
+
+  .install-hero {
+    min-height: 34vh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .access-close,
+  .access-row button,
+  .access-row input {
+    transition-duration: 0.01ms;
+  }
+
+  .access-row button:active {
+    scale: 1;
+  }
+}

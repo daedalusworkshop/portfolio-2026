@@ -1,7 +1,8 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import type { MouseEvent } from 'react'
+import type { KeyboardEvent as ReactKeyboardEvent, MouseEvent } from 'react'
+import { usePersistentAudio } from '@/components/PersistentAudio/PersistentAudioProvider'
 
 type Recording = {
   label: string
@@ -63,6 +64,8 @@ function ListenSequence({
   const [activeIndex, setActiveIndex] = useState(-1)
   const [progress, setProgress] = useState(0)
   const audioRef = useRef<HTMLAudioElement | null>(null)
+  const dialogRef = useRef<HTMLDivElement | null>(null)
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null)
   const indexRef = useRef(index)
   const phaseRef = useRef(phase)
 
@@ -70,6 +73,12 @@ function ListenSequence({
   phaseRef.current = phase
 
   const rec = playlist[index]
+
+  useEffect(() => {
+    const previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null
+    closeButtonRef.current?.focus()
+    return () => previouslyFocused?.focus()
+  }, [])
 
   const advance = useCallback(() => {
     if (phaseRef.current !== 'playing' && phaseRef.current !== 'more') return
@@ -138,7 +147,27 @@ function ListenSequence({
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Tab') {
+        const focusable = Array.from(
+          dialogRef.current?.querySelectorAll<HTMLElement>(
+            'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+          ) || [],
+        )
+        const first = focusable[0]
+        const last = focusable[focusable.length - 1]
+
+        if (first && last && event.shiftKey && document.activeElement === first) {
+          event.preventDefault()
+          last.focus()
+        } else if (first && last && !event.shiftKey && document.activeElement === last) {
+          event.preventDefault()
+          first.focus()
+        }
+        return
+      }
+
       if (event.code === 'Space') {
+        if (event.target instanceof HTMLElement && event.target.closest('button, a, input, select, textarea')) return
         event.preventDefault()
         if (phaseRef.current === 'prompt') {
           setPhase('more')
@@ -164,18 +193,41 @@ function ListenSequence({
     audio.currentTime = ((event.clientX - rect.left) / rect.width) * audio.duration
   }, [])
 
+  const seekWithKeyboard = useCallback((event: ReactKeyboardEvent<HTMLDivElement>) => {
+    const audio = audioRef.current
+    if (!audio || !audio.duration) return
+
+    let nextTime = audio.currentTime
+    if (event.key === 'ArrowRight' || event.key === 'ArrowUp') nextTime += 5
+    else if (event.key === 'ArrowLeft' || event.key === 'ArrowDown') nextTime -= 5
+    else if (event.key === 'Home') nextTime = 0
+    else if (event.key === 'End') nextTime = audio.duration
+    else return
+
+    event.preventDefault()
+    audio.currentTime = Math.max(0, Math.min(audio.duration, nextTime))
+  }, [])
+
   const activeText = blocks[activeIndex]?.text ?? ''
 
   return (
-    <div className="fixed inset-0 z-50 flex animate-[telephoneFadeIn_1.2s_ease_forwards] flex-col bg-black font-serif text-white">
+    <div
+      ref={dialogRef}
+      className="telephone-motion fixed inset-0 z-50 flex animate-[telephoneFadeIn_1.2s_ease_forwards] flex-col bg-black font-serif text-white"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Project Telephone listening experience"
+    >
       <div className="flex shrink-0 items-start justify-between px-6 pt-8 md:px-10 md:pt-10">
         <p className="max-w-xs text-sm italic leading-relaxed text-white/60">
           To bring out the soulful blues we feel, every day. To give it a shared voice. To share it
           is to say it&apos;s okay.
         </p>
         <button
+          ref={closeButtonRef}
           type="button"
           onClick={onClose}
+          aria-label="Close listening experience"
           className="cursor-pointer text-sm lowercase tracking-[0.28em] text-white/30 transition-colors duration-300 hover:text-white/70 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-white/60"
         >
           esc
@@ -196,7 +248,7 @@ function ListenSequence({
             press space to listen to more
           </button>
         ) : (
-          <p key={rec?.label} className="animate-[telephoneFadeIn_1s_ease_forwards] text-4xl tracking-wide text-white/80 md:text-5xl">
+          <p key={rec?.label} className="telephone-motion animate-[telephoneFadeIn_1s_ease_forwards] text-4xl tracking-wide text-white/80 md:text-5xl">
             {rec?.label}
           </p>
         )}
@@ -204,7 +256,7 @@ function ListenSequence({
         {activeText && phase !== 'prompt' && (
           <p
             key={activeText}
-            className="max-w-xl animate-[telephoneFadeIn_1.5s_ease_forwards] text-xl leading-relaxed tracking-wide text-white/75 md:text-2xl"
+            className="telephone-motion max-w-xl animate-[telephoneFadeIn_1.5s_ease_forwards] text-xl leading-relaxed tracking-wide text-white/75 md:text-2xl"
           >
             {activeText}
           </p>
@@ -221,11 +273,14 @@ function ListenSequence({
         <div
           className="group relative h-3 cursor-pointer"
           onClick={phase !== 'prompt' ? seek : undefined}
+          onKeyDown={phase !== 'prompt' ? seekWithKeyboard : undefined}
+          tabIndex={phase !== 'prompt' ? 0 : -1}
           role={phase !== 'prompt' ? 'slider' : undefined}
           aria-label={phase !== 'prompt' ? 'Audio progress' : undefined}
           aria-valuemin={phase !== 'prompt' ? 0 : undefined}
           aria-valuemax={phase !== 'prompt' ? 100 : undefined}
           aria-valuenow={phase !== 'prompt' ? Math.round(progress * 100) : undefined}
+          aria-valuetext={phase !== 'prompt' ? `${Math.round(progress * 100)} percent` : undefined}
         >
           <div className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-white/10" />
           <div
@@ -244,6 +299,12 @@ function ListenSequence({
 
 export default function ProjectTelephoneClient() {
   const [listening, setListening] = useState(false)
+  const { handoffPlayback } = usePersistentAudio()
+
+  const startListening = () => {
+    handoffPlayback()
+    setListening(true)
+  }
 
   useEffect(() => {
     if (!listening) return
@@ -268,7 +329,7 @@ export default function ProjectTelephoneClient() {
         </h1>
         <p className="mb-16 text-sm tracking-[0.28em] text-white/45">Spring 2026</p>
 
-        <section className="mb-20 space-y-5 animate-[telephoneFadeIn_1.2s_ease_forwards]">
+        <section className="telephone-motion mb-20 space-y-5 animate-[telephoneFadeIn_1.2s_ease_forwards]">
           <p className="text-xs lowercase tracking-[0.28em] text-white/45">the idea</p>
           <p className="text-2xl italic leading-relaxed text-white/90 md:text-3xl">
             An honest installation. A telephone booth on a college drillfield. Pick up a telephone
@@ -276,18 +337,18 @@ export default function ProjectTelephoneClient() {
           </p>
         </section>
 
-        <section className="mb-20 animate-[telephoneFadeIn_1.8s_ease_forwards]">
+        <section className="telephone-motion mb-20 animate-[telephoneFadeIn_1.8s_ease_forwards]">
           <p className="mb-4 text-xs lowercase tracking-[0.28em] text-white/45">the question</p>
           <p className="text-2xl italic tracking-wide text-white/90 md:text-3xl">
             {QUESTION} Who do you wish to call?
           </p>
         </section>
 
-        <section className="mb-24 animate-[telephoneFadeIn_2.4s_ease_forwards]">
+        <section className="telephone-motion mb-24 animate-[telephoneFadeIn_2.4s_ease_forwards]">
           <p className="mb-4 text-xs lowercase tracking-[0.28em] text-white/45">the recordings</p>
           <button
             type="button"
-            onClick={() => setListening(true)}
+            onClick={startListening}
             className="group cursor-pointer text-left text-2xl italic tracking-wide text-white/90 transition-colors duration-300 hover:text-white focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-8 focus-visible:outline-white/60"
           >
             <span className="relative">
@@ -297,7 +358,7 @@ export default function ProjectTelephoneClient() {
           </button>
         </section>
 
-        <p className="animate-[telephoneFadeIn_2.8s_ease_forwards] text-[13px] italic tracking-wide text-white/25">
+        <p className="telephone-motion animate-[telephoneFadeIn_2.8s_ease_forwards] text-[13px] italic tracking-wide text-white/25">
           Real humans recorded on a digital proof of concept.
         </p>
       </div>

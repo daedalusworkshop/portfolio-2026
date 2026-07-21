@@ -4,7 +4,6 @@ type Props = { poem: { slug: string; title: string; body: string } }
 
 export default function PoetryReader({ poem }: Props) {
   const lines = poem.body.trimEnd().split('\n')
-  const { title } = poem
 
   return (
     <div className="min-h-screen flex items-center justify-center px-6 py-32">
@@ -15,7 +14,7 @@ export default function PoetryReader({ poem }: Props) {
         >
           ← poetry
         </Link>
-<div className="font-serif text-lg leading-relaxed text-white/80">
+        <div className="font-serif text-lg leading-relaxed text-white/80">
           {lines.map((line, i) =>
             line.trim() === '' ? (
               <div key={i} className="h-6" />

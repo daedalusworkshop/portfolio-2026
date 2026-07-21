@@ -1,0 +1,42 @@
+.nav-audio__progress-link {
+  position: absolute;
+  right: 1rem;
+  bottom: -0.5rem;
+  left: 1rem;
+  height: 0.75rem;
+}
+
+.nav-audio__progress-link:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 2px;
+}
+
+.nav-audio__progress {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  height: 1px;
+  translate: 0 -50%;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.78) 0 var(--persistent-audio-progress),
+    rgba(255, 255, 255, 0.12) var(--persistent-audio-progress) 100%
+  );
+}
+
+.nav-audio__progress.is-light {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.68) 0 var(--persistent-audio-progress),
+    rgba(0, 0, 0, 0.14) var(--persistent-audio-progress) 100%
+  );
+}
+
+@media (min-width: 640px) {
+  .nav-audio__progress-link {
+    right: 1.5rem;
+    left: 1.5rem;
+  }
+}

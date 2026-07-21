@@ -1,8 +1,12 @@
 import { getAllDesignSlugs, getDesignProject } from '@/lib/content'
 import { notFound } from 'next/navigation'
 
+const DEDICATED_DESIGN_ROUTES = new Set(['circle-family'])
+
 export async function generateStaticParams() {
-  return getAllDesignSlugs().map((slug) => ({ slug }))
+  return getAllDesignSlugs()
+    .filter((slug) => !DEDICATED_DESIGN_ROUTES.has(slug))
+    .map((slug) => ({ slug }))
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {

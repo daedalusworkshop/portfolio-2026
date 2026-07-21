@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ZineMaker</title>
+    <meta
+      name="description"
+      content="A Codex plugin that turns one request into a complete printable zine."
+    >
+    <link rel="stylesheet" href="/zinemaker/styles.css">
+  </head>
+  <body class="home">
+    <header class="site-header" aria-label="Site header">
+      <a class="header-link header-back" href="https://kasra.world/" aria-label="Return to Kasra Mikaili’s portfolio">Kasra Mikaili</a>
+      <a class="wordmark" href="/zinemaker" aria-label="ZineMaker home">ZineMaker</a>
+      <button class="header-link install-cta" type="button" data-access-open>Request access</button>
+    </header>
+
+    <main class="home-shell">
+      <section class="copy-rail" aria-labelledby="hero-title">
+        <div class="copy-page hero-copy">
+          <h1 id="hero-title">Print a zine by talking to your agent.</h1>
+        </div>
+
+        <div class="copy-page flow-copy" id="flow" aria-labelledby="flow-title">
+          <p class="eyebrow">How it works</p>
+          <h2 id="flow-title" class="visually-hidden">How it works</h2>
+
+          <ol class="flow-list">
+            <li>
+              <span class="flow-command">Start with anything</span>
+              <span class="flow-detail">Give your agent an idea, story, image, link, or file.</span>
+            </li>
+            <li>
+              <span class="flow-command">It makes the zine</span>
+              <span class="flow-detail">Your agent uses GPT Image 2 to create an eight-page zine laid out on one sheet of paper.</span>
+            </li>
+            <li>
+              <span class="flow-command">It prints it</span>
+              <span class="flow-detail">Your agent sends the finished sheet to a printer on your Wi-Fi. Fold it into a zine.</span>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <aside class="media-rail" aria-label="Printed zine video preview">
+        <figure class="video-plate">
+          <video
+            src="/zinemaker/zine-scroll.mp4?v=20260719"
+            poster="/zinemaker/zine-poster.jpg?v=20260719"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+            aria-label="Zinemaker video preview"
+          ></video>
+        </figure>
+      </aside>
+    </main>
+
+    <dialog class="access-dialog" aria-labelledby="access-title">
+      <div class="access-dialog-inner">
+        <button class="access-close" type="button" aria-label="Close early access form">Close</button>
+        <p class="access-kicker">Private beta</p>
+        <h2 id="access-title">Get early access.</h2>
+        <form
+          class="access-form"
+          action="https://formspree.io/f/mwvgqebk"
+          method="post"
+          novalidate
+        >
+          <input type="hidden" name="_subject" value="ZineMaker private beta request">
+          <input type="hidden" name="source" value="zinemaker">
+          <label class="visually-hidden" for="access-email">Email address</label>
+          <div class="access-row">
+            <input
+              id="access-email"
+              name="email"
+              type="email"
+              inputmode="email"
+              autocomplete="email"
+              placeholder="you@email.com"
+              required
+              aria-describedby="access-note access-status"
+            >
+            <button type="submit">Request access</button>
+          </div>
+          <p class="access-note" id="access-note">Your email is used only for ZineMaker access.</p>
+          <p class="access-status" id="access-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </dialog>
+
+    <script>
+      const previewVideo = document.querySelector(".video-plate video");
+      let waitingForVideoData = false;
+
+      const playPreview = () => {
+        if (!previewVideo) return;
+
+        previewVideo.play().catch(() => {
+          if (waitingForVideoData) return;
+          waitingForVideoData = true;
+          previewVideo.addEventListener(
+            "canplay",
+            () => {
+              waitingForVideoData = false;
+              playPreview();
+            },
+            { once: true },
+          );
+        });
+      };
+
+      const recoverPreview = () => {
+        if (!previewVideo || document.visibilityState !== "visible") return;
+
+        requestAnimationFrame(() => {
+          if (
+            !previewVideo.currentSrc ||
+            previewVideo.readyState === HTMLMediaElement.HAVE_NOTHING
+          ) {
+            previewVideo.load();
+          }
+          playPreview();
+        });
+      };
+
+      recoverPreview();
+
+      window.addEventListener("pagehide", () => previewVideo?.pause());
+      window.addEventListener("pageshow", recoverPreview);
+      document.addEventListener("visibilitychange", recoverPreview);
+
+      const accessDialog = document.querySelector(".access-dialog");
+      const accessOpen = document.querySelector("[data-access-open]");
+      const accessClose = document.querySelector(".access-close");
+      const accessForm = document.querySelector(".access-form");
+      const accessEmail = document.querySelector("#access-email");
+      const accessStatus = document.querySelector("#access-status");
+
+      accessOpen?.addEventListener("click", () => {
+        if (!(accessDialog instanceof HTMLDialogElement)) return;
+        accessDialog.showModal();
+        requestAnimationFrame(() => accessEmail?.focus());
+      });
+
+      accessClose?.addEventListener("click", () => accessDialog?.close());
+
+      accessDialog?.addEventListener("click", (event) => {
+        if (event.target === accessDialog) accessDialog.close();
+      });
+
+      accessForm?.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (
+          !(accessForm instanceof HTMLFormElement) ||
+          !(accessEmail instanceof HTMLInputElement) ||
+          !accessEmail.checkValidity()
+        ) {
+          accessEmail?.reportValidity();
+          return;
+        }
+
+        const submitButton = accessForm.querySelector('button[type="submit"]');
+        if (submitButton instanceof HTMLButtonElement) submitButton.disabled = true;
+        accessForm.setAttribute("aria-busy", "true");
+        if (accessStatus) accessStatus.textContent = "Sending…";
+
+        try {
+          const response = await fetch(accessForm.action, {
+            method: "POST",
+            body: new FormData(accessForm),
+            headers: { Accept: "application/json" },
+          });
+
+          if (!response.ok) throw new Error("Formspree rejected the request");
+
+          accessForm.reset();
+          if (accessStatus) accessStatus.textContent = "Request received.";
+        } catch {
+          if (accessStatus) accessStatus.textContent = "Could not send. Please try again.";
+        } finally {
+          accessForm.removeAttribute("aria-busy");
+          if (submitButton instanceof HTMLButtonElement) submitButton.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>
