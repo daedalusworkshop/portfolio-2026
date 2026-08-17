@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { NAV_ITEMS } from './nav.config'
 import DropdownMenu from './DropdownMenu'
+import { NavMenuProvider } from './NavMenuContext'
 import PersistentAudioIndicator from '@/components/PersistentAudio/PersistentAudioIndicator'
 
 type RGB = [number, number, number]
@@ -115,25 +116,27 @@ export default function Nav() {
         kasra mikaili
       </Link>
       <PersistentAudioIndicator light={navIsLight} />
-      <nav className="grid min-w-0 flex-1 grid-cols-4 items-center sm:flex sm:flex-none sm:gap-6 md:gap-8">
-        {NAV_ITEMS.map((item, index) => {
-          const active = pathMatches(pathname, item.href) || item.children.some(child => pathMatches(pathname, child.href))
-          const mobileAlign = index === 0 ? 'left' : index === NAV_ITEMS.length - 1 ? 'right' : 'center'
+      <NavMenuProvider pathname={pathname}>
+        <nav className="grid min-w-0 flex-1 grid-cols-4 items-center sm:flex sm:flex-none sm:gap-6 md:gap-8">
+          {NAV_ITEMS.map((item, index) => {
+            const active = pathMatches(pathname, item.href) || item.children.some(child => pathMatches(pathname, child.href))
+            const mobileAlign = index === 0 ? 'left' : index === NAV_ITEMS.length - 1 ? 'right' : 'center'
 
-          return (
-            <DropdownMenu
-              key={item.label}
-              label={item.label}
-              light={navIsLight}
-              pathname={pathname}
-              active={active}
-              mobileAlign={mobileAlign}
-            >
-              {item.children}
-            </DropdownMenu>
-          )
-        })}
-      </nav>
+            return (
+              <DropdownMenu
+                key={item.label}
+                label={item.label}
+                light={navIsLight}
+                pathname={pathname}
+                active={active}
+                mobileAlign={mobileAlign}
+              >
+                {item.children}
+              </DropdownMenu>
+            )
+          })}
+        </nav>
+      </NavMenuProvider>
     </header>
   )
 }

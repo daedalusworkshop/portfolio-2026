@@ -1,8 +1,9 @@
 'use client'
 
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useRef } from 'react'
 import Link from 'next/link'
 import AudioHandoffLink from '@/components/AudioHandoffLink'
+import { useNavMenu } from './NavMenuContext'
 
 type Item = { label: string; href: string; newTab?: boolean }
 type Props = {
@@ -22,39 +23,40 @@ export default function DropdownMenu({
   active = false,
   mobileAlign = 'right',
 }: Props) {
-  const [open, setOpen] = useState(false)
   const buttonRef = useRef<HTMLButtonElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const menuId = useId()
+  const { openId, requestOpen, requestClose, openNow, closeNow, toggle } = useNavMenu()
+  const open = openId === menuId
   const canHover = () => window.matchMedia('(hover: hover)').matches
 
   useEffect(() => {
     if (!open) return
 
     const closeOnOutsidePress = (event: PointerEvent) => {
-      if (!containerRef.current?.contains(event.target as Node)) setOpen(false)
+      if (!containerRef.current?.contains(event.target as Node)) closeNow()
     }
 
     document.addEventListener('pointerdown', closeOnOutsidePress)
     return () => document.removeEventListener('pointerdown', closeOnOutsidePress)
-  }, [open])
+  }, [open, closeNow])
 
   return (
     <div
       ref={containerRef}
       className="relative min-w-0"
       onMouseEnter={() => {
-        if (canHover()) setOpen(true)
+        if (canHover()) requestOpen(menuId)
       }}
       onMouseLeave={() => {
-        if (canHover()) setOpen(false)
+        if (canHover()) requestClose(menuId)
       }}
       onBlur={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false)
+        if (open && !event.currentTarget.contains(event.relatedTarget)) closeNow()
       }}
       onKeyDown={(event) => {
-        if (event.key !== 'Escape') return
-        setOpen(false)
+        if (event.key !== 'Escape' || !open) return
+        closeNow()
         buttonRef.current?.focus()
       }}
     >
@@ -71,65 +73,68 @@ export default function DropdownMenu({
         aria-haspopup="true"
         aria-current={active ? 'true' : undefined}
         onClick={() => {
-          if (canHover()) setOpen(true)
-          else setOpen((current) => !current)
+          if (canHover()) openNow(menuId)
+          else toggle(menuId)
         }}
       >
         {label}
       </button>
 
-      {open && (
-        <div
-          className={`absolute top-full z-50 min-w-[160px] max-w-[calc(100vw-1.5rem)] pt-2 sm:left-auto sm:right-0 sm:translate-x-0 ${
-            mobileAlign === 'left'
-              ? 'left-0'
-              : mobileAlign === 'center'
-                ? 'left-1/2 -translate-x-1/2'
-                : 'right-0'
-          }`}
-        >
-          <ul id={menuId} className="bg-[#111] py-1 shadow-[0_0_0_1px_rgba(255,255,255,0.10)]">
-            {children.map((item) => {
-              const external = item.href.startsWith('http')
-              const current = !external && (pathname === item.href || pathname.startsWith(`${item.href}/`))
-              const className = 'block min-h-11 px-4 py-3 text-sm text-white/65 hover:bg-white/5 hover:text-white aria-[current=page]:text-white focus-visible:bg-white/5 focus-visible:text-white focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-white/80 transition-colors duration-100'
+      <div
+        inert={!open}
+        className={`absolute top-full z-50 min-w-[160px] max-w-[calc(100vw-1.5rem)] pt-2 transition-[opacity,translate,visibility] duration-150 ease-out motion-reduce:transition-none sm:left-auto sm:right-0 sm:translate-x-0 ${
+          mobileAlign === 'left'
+            ? 'left-0'
+            : mobileAlign === 'center'
+              ? 'left-1/2 -translate-x-1/2'
+              : 'right-0'
+        } ${
+          open
+            ? 'visible translate-y-0 opacity-100'
+            : 'invisible -translate-y-1 opacity-0 pointer-events-none motion-reduce:translate-y-0'
+        }`}
+      >
+        <ul id={menuId} className="bg-[#111] py-1 shadow-[0_0_0_1px_rgba(255,255,255,0.10)]">
+          {children.map((item) => {
+            const external = item.href.startsWith('http')
+            const current = !external && (pathname === item.href || pathname.startsWith(`${item.href}/`))
+            const className = 'block min-h-11 px-4 py-3 text-sm text-white/65 hover:bg-white/5 hover:text-white aria-[current=page]:text-white focus-visible:bg-white/5 focus-visible:text-white focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-white/80 transition-colors duration-100'
 
-              return (
-                <li key={item.href}>
-                  {item.newTab ? (
-                    <a
-                      href={item.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={className}
-                      onClick={() => setOpen(false)}
-                    >
-                      {item.label}<span className="sr-only"> Opens in a new tab.</span>
-                    </a>
-                  ) : external ? (
-                    <AudioHandoffLink
-                      href={item.href}
-                      className={className}
-                      onClick={() => setOpen(false)}
-                    >
-                      {item.label}
-                    </AudioHandoffLink>
-                  ) : (
-                    <Link
-                      href={item.href}
-                      aria-current={current ? 'page' : undefined}
-                      className={className}
-                      onClick={() => setOpen(false)}
-                    >
-                      {item.label}
-                    </Link>
-                  )}
-                </li>
-              )
-            })}
-          </ul>
-        </div>
-      )}
+            return (
+              <li key={item.href}>
+                {item.newTab ? (
+                  <a
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={className}
+                    onClick={closeNow}
+                  >
+                    {item.label}<span className="sr-only"> Opens in a new tab.</span>
+                  </a>
+                ) : external ? (
+                  <AudioHandoffLink
+                    href={item.href}
+                    className={className}
+                    onClick={closeNow}
+                  >
+                    {item.label}
+                  </AudioHandoffLink>
+                ) : (
+                  <Link
+                    href={item.href}
+                    aria-current={current ? 'page' : undefined}
+                    className={className}
+                    onClick={closeNow}
+                  >
+                    {item.label}
+                  </Link>
+                )}
+              </li>
+            )
+          })}
+        </ul>
+      </div>
     </div>
   )
 }
